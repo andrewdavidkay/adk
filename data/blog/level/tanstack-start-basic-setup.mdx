@@ -1,0 +1,133 @@
+---
+title: Tanstack Start Basic Setup
+date: '2025-11-19'
+draft: false
+---
+
+Create the Tanstack Start application.
+
+```bash
+npm create @tanstack/start@latest
+```
+
+An interactive prompt will start. My choices were:
+
+```bash
+What would you like to name your project?
+level
+```
+
+Name your project whatever you want.
+
+```bash
+Would you like to use Tailwind CSS?
+Yes
+```
+
+Seems standard nowadays.
+
+```bash
+Select toolchain
+Biome
+```
+
+First I'm hearing of `Biome` but what the heck, let's try it out.
+
+```bash
+Select deployment adapter
+Nitro
+```
+
+One of the main reason's I'm trying out Tanstack Start is I want to break free of the Vercel/Nextjs
+lock-in. Plus I want to avoid serverless altogether. So I chose Nitro and will be hosting my app on
+[Railway](https://railway.com).
+
+```bash
+What add-ons would you like for your project?
+Drizzle, Shadcn, tRPC, Query
+```
+
+Use the spacebar here to select your add-ons.
+
+I chose Drizzle because I've used it before and works fine. The other three selections I have not
+used but want to learn. I will be documenting all my learnings as I go.
+
+```bash
+Would you like any examples?
+none
+```
+
+The only option here is some sort of AI chat example. Miss me with that AI foolishness.
+
+```bash
+Drizzle: Database Provider
+PostgreSQL
+```
+
+I am going to be using serverless (for now) for the db because [Neon](https://neon.com) makes things
+easy to start and they run Postgres. Now you might be wondering why I didn't choose the `neon`
+add-on. Well, last time I tried it it was broken and I'm not sure what it does anyways. So...yeah.
+
+Now your initial app is setup.
+
+Start the dev server.
+
+```bash
+cd [your-app-name-here]
+npm run dev
+```
+
+Point your browser to http://localhost:3000 and you should see the basic index page. I set my dev
+server to run on port 3001 because 3000 is running my blog.
+
+![Tanstack Start Index Page](/static/images/tanstack-start-page.png)
+
+<p align="center">
+  <em>Tanstack Start default index page.</em>
+</p>
+
+I discovered a neat little debug feature while I was taking the above screenshot: if you hold
+`CMD + shift` down it will tell you the file name and line number of the current element your cursor
+is hovering over. Must be part of Tanstack's debug tools.
+
+Now I'm going to make my first actual edit to the code base by deleting pretty much all of the index
+page.
+
+```typescript:src/routes/index.tsx
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/")({ component: App });
+
+function App() {
+	return <div>Welcome to Level</div>;
+}
+```
+
+Next I'm going to remove the header code and add my logo.
+
+```typescript:src/components/Header.tsx
+import { Link } from "@tanstack/react-router";
+
+export default function Header() {
+	return (
+		<header className="p-4 flex items-center bg-white">
+			<h1 className="ml-4 text-lg">
+				<Link to="/">
+					<img src="/logo.svg" alt="level logo" className="h-10" />
+				</Link>
+			</h1>
+		</header>
+	);
+}
+```
+
+![Index Page With Header Edit](/static/images/index-1.png)
+
+So now we've got our initial basic Tanstack Start setup with some basic first edits. Time to commit
+our changes.
+
+```bash
+git init
+git add .
+git commmit -am 'initial commit'
+```
