@@ -1,0 +1,78 @@
+---
+title: Level 0 Setting Up Tanstack Start
+date: '2025-11-19'
+draft: true
+---
+
+Create the Tanstack Start application.
+
+```
+npm create @tanstack/start@latest
+```
+
+An interactive prompt will start. My choices were:
+
+```
+What would you like to name your project?
+level
+```
+
+Name your project whatever you want.
+
+```
+Would you like to use Tailwind CSS?
+Yes
+```
+
+Seems standard nowadays.
+
+```
+Select toolchain
+Biome
+```
+
+First I'm hearing of `Biome` but what the heck, let's try it out.
+
+```
+Select deployment adapter
+Nitro
+```
+
+One of the main reason's I'm trying out Tanstack Start is I want to break free of the Vercel/Nextjs
+lock-in. Plus I want to avoid serverless altogether. So I chose Nitro and will be hosting my app on
+[Railway](https://railway.com).
+
+```
+What add-ons would you like for your project?
+Drizzle, Shadcn, tRPC, Query
+```
+
+Use the spacebar here to select your add-ons.
+
+I chose Drizzle because I've used it before and works fine. The other three selections I have not
+used but want to learn. I will be documenting all my learnings as I go.
+
+```
+Would you like any examples?
+none
+```
+
+The only option here is some sort of AI chat example. Miss me with that AI foolishness.
+
+```
+Drizzle: Database Provider
+PostgreSQL
+```
+
+I am going to be using serverless (for now) for the db because [Neon](https://neon.com) makes things
+easy to start and they run Postgres. Now you might be wondering why I didn't choose the `neon`
+add-on. Well, last time I tried it it was broken and I'm not sure what it does anyways. So...yeah.
+
+Now your initial app is setup.
+
+Start the dev server.
+
+```
+cd [your-app-name-here]
+npm run dev
+```
