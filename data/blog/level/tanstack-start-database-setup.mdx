@@ -1,7 +1,7 @@
 ---
 title: Tanstack Start Database Setup
 date: '2025-11-20'
-draft: true
+draft: false
 ---
 
 First, create a database at https://neon.com. I skipped the init command neon gives you so close
@@ -43,3 +43,26 @@ npx drizzle-kit studio
 
 Cool the database connection works! Progress. We can even add some data by going to
 http://localhost:3000/demo/drizzle.
+
+Next I'm going to tackle Auth but before I do that I'm going to tweak the header a bit with some
+Tailwind.
+
+```typescript:src/components/Header
+import { Link } from "@tanstack/react-router";
+
+export default function Header() {
+	return (
+		<header className="p-4 flex items-center bg-white">
+			<div className="w-full max-w-2xl mx-auto">
+				<h1 className="ml-4 text-xl font-semibold">
+					<Link to="/">
+						<img src="/logo.svg" alt="level logo" className="h-10" />
+					</Link>
+				</h1>
+			</div>
+		</header>
+	);
+}
+```
+
+There. Now onto onto Auth in the next post.
