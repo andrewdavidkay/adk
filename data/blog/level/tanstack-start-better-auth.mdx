@@ -1,0 +1,42 @@
+---
+title: Tanstack Start Better Auth Setup
+date: '11-21-25'
+draft: true
+---
+
+### Install NPM Package
+
+```bash
+npm install better-auth
+```
+
+### Set Enviornment Variables
+
+Generate the key with openssl.
+
+```bash
+openssl rand -base64 32
+```
+
+Then set the environment variable.
+
+Generate a hash
+
+```:.env
+BETTER_AUTH_SECRET=<generated secret key>
+```
+
+Set the base URL.
+
+```
+BETTER_AUTH_URL=http://localhost:3000
+```
+
+### Create An Instance
+
+```typescript:src/lib/auth.ts
+import { betterAuth } from "better-auth";
+export const auth = betterAuth({
+  //...
+});
+```
