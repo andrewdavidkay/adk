@@ -1,0 +1,45 @@
+---
+title: Tanstack Start Database And Auth Setup
+date: '2025-11-20'
+draft: true
+---
+
+First, create a database at https://neon.com. I skipped the init command neon gives you so close
+that pop up and then from your `Project Dashboard` click on `Connect` under the
+`Connect to your database` section. Copy the connection string and open up your `env.local` file to
+replace the placeholder string.
+
+```text:.env.local
+# Database URL for PostgreSQL
+DATABASE_URL="paste your connection string here"
+```
+
+Test the connection by migrating your database with the demo schema already provided in
+`src/db/schema.ts`.
+
+```bash
+npx drizzle-kit push
+```
+
+You should get an error. That is because we need to rename are `.env.local` file to just `.env`
+
+```bash
+mv .env.local .env
+```
+
+Run the push command again and studio command then open up drizzle studio at
+`https://local.drizzle.studio` to view your database.
+
+```bash
+npx drizzle-kit push
+npx drizzle-kit studio
+```
+
+![Drizzle Kit Studio](/static/images/drizzle-kit-studio.png)
+
+<p align="center">
+  <em>Drizzle Kit Studio</em>
+</p>
+
+Cool the database connection works! Progress. We can even add some data by going to
+http://localhost:3000/demo/drizzle.
