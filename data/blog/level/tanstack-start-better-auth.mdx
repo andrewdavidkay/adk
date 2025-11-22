@@ -28,7 +28,7 @@ BETTER_AUTH_SECRET=<generated secret key>
 
 Set the base URL.
 
-```
+```:.env
 BETTER_AUTH_URL=http://localhost:3000
 ```
 
@@ -38,5 +38,111 @@ BETTER_AUTH_URL=http://localhost:3000
 import { betterAuth } from "better-auth";
 export const auth = betterAuth({
   //...
+});
+```
+
+Add the Drizzle adapter.
+
+```typescript:src/lib/auth.ts {2,3,6,7,8}
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from "@/db";
+
+export const auth = betterAuth({
+    database: drizzleAdapter(db, {
+        provider: "pg",
+    }),
+});
+```
+
+### Schema
+
+Generate the required Better Auth schema.
+
+```bash
+npx @better-auth/cli generate
+```
+
+That will create a sql file in `better-auth_migrations`. If you have postgres installed on your
+local maching you can run the following.
+
+```bash
+psql "put your connection string here" -f better-auth_migrations/<name of generated filename>.sql
+```
+
+If you don't have postgres installed you can copy the contents of the generated file and paste it
+into your Drizzle Studio SQL Console.
+
+### Authentication Method
+
+For this app I'm going to be using email and password authentication.
+
+```typescript:src/lib/auth.ts {8,9,10}
+import { betterAuth } from "better-auth";
+import { Pool } from "pg"; //
+
+export const auth = betterAuth({
+	database: new Pool({
+		// connection options
+	}),
+	emailAndPassword: {
+		enabled: true,
+	},
+});
+```
+
+### Mount Handler
+
+Create a catchall api route for Better Auth.
+
+```bash
+mkdir -p src/routes/api/auth && touch src/routes/api/auth/$.ts
+```
+
+```typescript:src/routes/api/auth/$.ts
+import { createFileRoute } from "@tanstack/react-router";
+import { auth } from "@/lib/auth";
+
+export const Route = createFileRoute("/api/auth/$")({
+	server: {
+		handlers: {
+			GET: async ({ request }: { request: Request }) => {
+				return await auth.handler(request);
+			},
+			POST: async ({ request }: { request: Request }) => {
+				return await auth.handler(request);
+			},
+		},
+	},
+});
+```
+
+### Create Client Instance
+
+Create a new file `src/lib/auth-client.ts`.
+
+````bash
+touch src/lib/auth-client.ts`
+
+```typescript:src/lib/auth-client.ts
+import { createAuthClient } from "better-auth/react"
+export const authClient = createAuthClient({})
+````
+
+### Usage
+
+```typescript:src/lib/auth.ts {2,12}
+import { betterAuth } from "better-auth";
+import { tanstackStartCookies } from "better-auth/tanstack-start";
+import { Pool } from "pg"; //
+
+export const auth = betterAuth({
+	database: new Pool({
+		// connection options
+	}),
+	emailAndPassword: {
+		enabled: true,
+	},
+	plugins: [tanstackStartCookies()], // make sure this is the last plugin in the array
 });
 ```
