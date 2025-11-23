@@ -75,13 +75,14 @@ into your Drizzle Studio SQL Console.
 
 For this app I'm going to be using email and password authentication.
 
-```typescript:src/lib/auth.ts {8,9,10}
+```typescript:src/lib/auth.ts {10,11,12}
 import { betterAuth } from "better-auth";
-import { Pool } from "pg"; //
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from "@/db";
 
 export const auth = betterAuth({
-	database: new Pool({
-		// connection options
+	database: drizzleAdapter(db, {
+		provider: "pg",
 	}),
 	emailAndPassword: {
 		enabled: true,
@@ -129,14 +130,15 @@ export const authClient = createAuthClient({})
 
 ### Usage
 
-```typescript:src/lib/auth.ts {2,12}
+```typescript:src/lib/auth.ts {3,13}
 import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
-import { Pool } from "pg"; //
+import { db } from "@/db";
 
 export const auth = betterAuth({
-	database: new Pool({
-		// connection options
+	database: drizzleAdapter(db, {
+		provider: "pg",
 	}),
 	emailAndPassword: {
 		enabled: true,
