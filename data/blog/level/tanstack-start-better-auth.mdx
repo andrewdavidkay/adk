@@ -94,7 +94,7 @@ config()
 
 export default defineConfig({
   out: './drizzle',
-  schema: './src/db',
+  schema: './src/db/schema',
   dialect: 'postgresql',
   dbCredentials: {
     url: process.env.DATABASE_URL,
@@ -108,7 +108,17 @@ Generate the required Better Auth schema.
 npx @better-auth/cli@latest generate --config ./src/lib/auth.ts -y --output ./src/db/schema/auth.schema.ts && prettier --write ./src/db/schema/auth.schema.ts
 ```
 
+Delete the `demo` folder because `todos` schema no longer exists.
+
+```bash
+rm -rf src/routes/demo
+```
+
 Generate the migration file.
+
+```bash
+npx drzzle-kit generate
+```
 
 ### Authentication Method
 
