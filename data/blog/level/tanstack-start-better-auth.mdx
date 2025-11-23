@@ -55,21 +55,61 @@ export const auth = betterAuth({
 
 ### Schema
 
+I'm going to do some restructuring of the schema files to so that I can have a separate schema file
+for each model or use case such as auth.
+
+````bash
+mkdir src/db/schema
+touch src/db/schema/index.ts
+touch src/db/schema/auth.schema.ts
+echo 'export * from "./auth.schema.ts";' > src/db/schema/index.ts
+rm src/db/schema.ts
+```
+
+Update `src/db/index.ts`.
+
+```typescript:src/db/index.ts {6}
+import { config } from "dotenv";
+
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
+
+import * as schema from "./schema";
+
+config();
+
+const pool = new Pool({
+	connectionString: process.env.DATABASE_URL!,
+});
+export const db = drizzle(pool, { schema });
+```
+
+Update Drizzle config.
+
+```typescript:drizzle.config.ts {8}
+import { config } from 'dotenv'
+import { defineConfig } from 'drizzle-kit'
+
+config()
+
+export default defineConfig({
+  out: './drizzle',
+  schema: './src/db',
+  dialect: 'postgresql',
+  dbCredentials: {
+    url: process.env.DATABASE_URL,
+  },
+})
+```
+
+
 Generate the required Better Auth schema.
 
 ```bash
-npx @better-auth/cli generate
-```
+npx @better-auth/cli@latest generate --config ./src/lib/auth.ts -y --output ./src/db/schema/auth.schema.ts && prettier --write ./src/db/schema/auth.schema.ts
+````
 
-That will create a sql file in `better-auth_migrations`. If you have postgres installed on your
-local maching you can run the following.
-
-```bash
-psql "put your connection string here" -f better-auth_migrations/<name of generated filename>.sql
-```
-
-If you don't have postgres installed you can copy the contents of the generated file and paste it
-into your Drizzle Studio SQL Console.
+Generate the migration file.
 
 ### Authentication Method
 
