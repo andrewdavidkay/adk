@@ -1,12 +1,12 @@
 ---
 title: Tanstack Start Better Auth Setup
 date: '11-21-25'
-draft: true
+draft: false
 ---
 
 ### Install NPM Package
 
-```bash
+```bash:Terminal
 npm install better-auth@latest
 ```
 
@@ -14,7 +14,7 @@ npm install better-auth@latest
 
 Generate the key with openssl.
 
-```bash
+```bash:Terminal
 openssl rand -base64 32
 ```
 
@@ -58,7 +58,7 @@ export const auth = betterAuth({
 I'm going to do some restructuring of the schema files to so that I can have a separate schema file
 for each model or use case such as auth.
 
-```bash
+```bash:Terminal
 mkdir src/db/schema
 touch src/db/schema/index.ts
 touch src/db/schema/auth.schema.ts
@@ -104,25 +104,25 @@ export default defineConfig({
 
 Generate the required Better Auth schema.
 
-```bash
+```bash:Terminal
 npx @better-auth/cli@latest generate --config ./src/lib/auth.ts -y --output ./src/db/schema/auth.schema.ts && prettier --write ./src/db/schema/auth.schema.ts
 ```
 
 Delete the `demo` folder because `todos` schema no longer exists.
 
-```bash
+```bash:Terminal
 rm -rf src/routes/demo
 ```
 
 Generate the migration file.
 
-```bash
+```bash:Terminal
 npx drzzle-kit generate
 ```
 
 Run the migration.
 
-```bash
+```bash:Terminal
 npx drizzle-kit migrate
 ```
 
@@ -130,7 +130,7 @@ npx drizzle-kit migrate
 
 For this app I'm going to be using email and password authentication.
 
-```typescript:src/lib/auth.ts {10,11,12}
+```typescript:src/lib/auth.ts {9,10,11}
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db";
@@ -147,9 +147,9 @@ export const auth = betterAuth({
 
 ### Mount Handler
 
-Create a catchall api route for Better Auth.
+Create a catch-all api route for Better Auth.
 
-```bash
+```bash:Terminal
 mkdir -p src/routes/api/auth && touch src/routes/api/auth/$.ts
 ```
 
@@ -175,7 +175,7 @@ export const Route = createFileRoute("/api/auth/$")({
 
 Create a new file `src/lib/auth-client.ts`.
 
-````bash
+````bash:Terminal
 touch src/lib/auth-client.ts`
 
 ```typescript:src/lib/auth-client.ts
@@ -204,7 +204,7 @@ export const auth = betterAuth({
 
 # Git Commit
 
-```bash
+```bash:Terminal
 git add .
 git commit -am 'inital better auth setup'
 ```
