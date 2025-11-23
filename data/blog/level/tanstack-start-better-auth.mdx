@@ -58,7 +58,7 @@ export const auth = betterAuth({
 I'm going to do some restructuring of the schema files to so that I can have a separate schema file
 for each model or use case such as auth.
 
-````bash
+```bash
 mkdir src/db/schema
 touch src/db/schema/index.ts
 touch src/db/schema/auth.schema.ts
@@ -102,12 +102,11 @@ export default defineConfig({
 })
 ```
 
-
 Generate the required Better Auth schema.
 
 ```bash
 npx @better-auth/cli@latest generate --config ./src/lib/auth.ts -y --output ./src/db/schema/auth.schema.ts && prettier --write ./src/db/schema/auth.schema.ts
-````
+```
 
 Generate the migration file.
 
